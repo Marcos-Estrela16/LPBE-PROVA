@@ -95,22 +95,22 @@ configfile: pytest.ini
 plugins: anyio-4.14.0, cov-7.1.0
 collecting ... collected 16 items                                                             
 
-tests/test_produtos.py::test_listagem_inicial_deve_retornar_vazio PASSED   [  6%]
-tests/test_produtos.py::test_adicionar_produto_valido_sucesso PASSED       [ 12%]
-tests/test_produtos.py::test_adicionar_produto_verifica_na_lista PASSED   [ 18%]
-tests/test_produtos.py::test_buscar_detalhe_produto_por_id PASSED         [ 25%]
-tests/test_produtos.py::test_buscar_produto_invalido_deve_retornar_404 PASSED [ 31%]
-tests/test_produtos.py::test_excluir_produto_sucesso PASSED               [ 37%]
-tests/test_produtos.py::test_excluir_produto_e_confirmar_inexistente PASSED [ 43%]
-tests/test_produtos.py::test_excluir_produto_inexistente_retorna_404 PASSED [ 50%]
-tests/test_produtos.py::test_criar_produto_com_dados_invalidos[dados_invalidos0] PASSED [ 56%]
-tests/test_produtos.py::test_criar_produto_com_dados_invalidos[dados_invalidos1] PASSED [ 62%]
-tests/test_produtos.py::test_criar_produto_com_dados_invalidos[dados_invalidos2] PASSED [ 68%]
-tests/test_produtos.py::test_criar_produto_com_dados_invalidos[dados_invalidos3] PASSED [ 75%]
-tests/test_produtos.py::test_criar_produto_com_dados_invalidos[dados_invalidos4] PASSED [ 81%]
-tests/test_produtos.py::test_criar_produto_com_dados_invalidos[dados_invalidos5] PASSED [ 87%]
-tests/test_produtos.py::test_persistencia_temporaria_isolamento_1 PASSED   [ 93%]
-tests/test_produtos.py::test_persistencia_temporaria_isolamento_2 PASSED   [100%]
+tests/test_produtos.py::test_deve_retornar_lista_vazia_quando_nenhum_produto_cadastrado PASSED   [  6%]
+tests/test_produtos.py::test_deve_salvar_novo_produto_com_sucesso PASSED       [ 12%]
+tests/test_produtos.py::test_produto_recem_criado_deve_aparecer_no_catalogo PASSED   [ 18%]
+tests/test_produtos.py::test_deve_retornar_detalhes_corretos_ao_buscar_por_id PASSED         [ 25%]
+tests/test_produtos.py::test_deve_retornar_404_para_produto_fora_do_catalogo PASSED [ 31%]
+tests/test_produtos.py::test_deve_remover_produto_do_catalogo_com_sucesso PASSED               [ 37%]
+tests/test_produtos.py::test_apos_remover_produto_nao_deve_mais_ser_encontrado PASSED [ 43%]
+tests/test_produtos.py::test_deve_retornar_404_ao_tentar_excluir_produto_fantasma PASSED [ 50%]
+tests/test_produtos.py::test_nao_deve_permitir_cadastro_com_dados_mal_formatados[dados_invalidos0] PASSED [ 56%]
+tests/test_produtos.py::test_nao_deve_permitir_cadastro_com_dados_mal_formatados[dados_invalidos1] PASSED [ 62%]
+tests/test_produtos.py::test_nao_deve_permitir_cadastro_com_dados_mal_formatados[dados_invalidos2] PASSED [ 68%]
+tests/test_produtos.py::test_nao_deve_permitir_cadastro_com_dados_mal_formatados[dados_invalidos3] PASSED [ 75%]
+tests/test_produtos.py::test_nao_deve_permitir_cadastro_com_dados_mal_formatados[dados_invalidos4] PASSED [ 81%]
+tests/test_produtos.py::test_nao_deve_permitir_cadastro_com_dados_mal_formatados[dados_invalidos5] PASSED [ 87%]
+tests/test_produtos.py::test_valida_isolamento_de_estado_no_banco_parte_1 PASSED   [ 93%]
+tests/test_produtos.py::test_valida_isolamento_de_estado_no_banco_parte_2 PASSED   [100%]
 
 ======================== 16 passed, 1 warning in 1.42s =========================
 ```
