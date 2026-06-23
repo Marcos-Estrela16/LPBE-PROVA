@@ -60,7 +60,7 @@ def test_deve_retornar_detalhes_corretos_ao_buscar_por_id(client, produto_existe
 def test_deve_retornar_404_para_produto_fora_do_catalogo(client):
     response = client.get("/produtos/101010")
     assert response.status_code == 404
-    assert response.json()["detail"] == "Produto não localizado no banco"
+    assert response.json()["detail"] == "Vish, não encontramos nenhum produto com esse ID no catálogo."
 
 # 6. Deletar produto — deve retornar 204
 def test_deve_remover_produto_do_catalogo_com_sucesso(client, produto_existente):
@@ -82,7 +82,7 @@ def test_apos_remover_produto_nao_deve_mais_ser_encontrado(client, produto_exist
 def test_deve_retornar_404_ao_tentar_excluir_produto_fantasma(client):
     response = client.delete("/produtos/202020")
     assert response.status_code == 404
-    assert response.json()["detail"] == "Produto não localizado no banco"
+    assert response.json()["detail"] == "Vish, não encontramos nenhum produto com esse ID no catálogo."
 
 # 9. Pelo menos 1 teste parametrizado com @pytest.mark.parametrize cobrindo payloads inválidos (status 422)
 @pytest.mark.parametrize(
