@@ -45,9 +45,9 @@ def produto_existente_fixture(client):
     db = TestingSessionLocal()
     try:
         sample = ProductModel(
-            nome="Mouse sem Fio",
-            preco=99.90,
-            estoque=25,
+            nome="Café Moído - Torra Média 250g",
+            preco=45.50,
+            estoque=100,
             ativo=True
         )
         db.add(sample)

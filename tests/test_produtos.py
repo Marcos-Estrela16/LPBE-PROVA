@@ -3,17 +3,17 @@ import pytest
 # Testes automatizados para validação do estoque com nomes e payloads diferenciados
 
 # 1. Listar produtos quando o banco está vazio
-def test_listagem_inicial_deve_retornar_vazio(client):
+def test_deve_retornar_lista_vazia_quando_nenhum_produto_cadastrado(client):
     response = client.get("/produtos")
     assert response.status_code == 200
     assert response.json() == []
 
 # 2. Criar produto e verificar persistência no banco
-def test_adicionar_produto_valido_sucesso(client):
+def test_deve_salvar_novo_produto_com_sucesso(client):
     payload = {
-        "nome": "Carregador Portatil USB-C",
-        "preco": 149.99,
-        "estoque": 40,
+        "nome": "Moedor de Café Manual em Inox",
+        "preco": 129.90,
+        "estoque": 20,
         "ativo": True
     }
     response = client.post("/produtos", json=payload)
@@ -27,11 +27,11 @@ def test_adicionar_produto_valido_sucesso(client):
     assert data["ativo"] == payload["ativo"]
 
 # 3. Criar produto e verificar que aparece na listagem
-def test_adicionar_produto_verifica_na_lista(client):
+def test_produto_recem_criado_deve_aparecer_no_catalogo(client):
     payload = {
-        "nome": "Cabo HDMI 2.1 2m",
-        "preco": 65.50,
-        "estoque": 100,
+        "nome": "Filtro de Papel Hario V60",
+        "preco": 35.00,
+        "estoque": 50,
         "ativo": True
     }
     # Cria
@@ -47,7 +47,7 @@ def test_adicionar_produto_verifica_na_lista(client):
     assert produtos[0]["nome"] == payload["nome"]
 
 # 4. Buscar produto por id — caso de sucesso
-def test_buscar_detalhe_produto_por_id(client, produto_existente):
+def test_deve_retornar_detalhes_corretos_ao_buscar_por_id(client, produto_existente):
     response = client.get(f"/produtos/{produto_existente.id}")
     assert response.status_code == 200
     
@@ -57,19 +57,19 @@ def test_buscar_detalhe_produto_por_id(client, produto_existente):
     assert data["preco"] == produto_existente.preco
 
 # 5. Buscar produto com id inexistente — deve retornar 404
-def test_buscar_produto_invalido_deve_retornar_404(client):
+def test_deve_retornar_404_para_produto_fora_do_catalogo(client):
     response = client.get("/produtos/101010")
     assert response.status_code == 404
     assert response.json()["detail"] == "Produto não localizado no banco"
 
 # 6. Deletar produto — deve retornar 204
-def test_excluir_produto_sucesso(client, produto_existente):
+def test_deve_remover_produto_do_catalogo_com_sucesso(client, produto_existente):
     response = client.delete(f"/produtos/{produto_existente.id}")
     assert response.status_code == 204
     assert response.text == ""
 
 # 7. Deletar produto e confirmar remoção com GET subsequente
-def test_excluir_produto_e_confirmar_inexistente(client, produto_existente):
+def test_apos_remover_produto_nao_deve_mais_ser_encontrado(client, produto_existente):
     # Deleta
     del_res = client.delete(f"/produtos/{produto_existente.id}")
     assert del_res.status_code == 204
@@ -79,7 +79,7 @@ def test_excluir_produto_e_confirmar_inexistente(client, produto_existente):
     assert get_res.status_code == 404
 
 # 8. Deletar produto inexistente — deve retornar 404
-def test_excluir_produto_inexistente_retorna_404(client):
+def test_deve_retornar_404_ao_tentar_excluir_produto_fantasma(client):
     response = client.delete("/produtos/202020")
     assert response.status_code == 404
     assert response.json()["detail"] == "Produto não localizado no banco"
@@ -90,22 +90,22 @@ def test_excluir_produto_inexistente_retorna_404(client):
     [
         {"nome": "", "preco": 80.0, "estoque": 10, "ativo": True},       # Nome vazio
         {"nome": "   ", "preco": 20.0, "estoque": 5, "ativo": True},     # Nome apenas com espaços
-        {"nome": "Teclado X", "preco": 0.0, "estoque": 1, "ativo": True},  # Preço zero
-        {"nome": "Teclado Y", "preco": -5.99, "estoque": 2, "ativo": True}, # Preço negativo
+        {"nome": "Prensa Francesa", "preco": 0.0, "estoque": 1, "ativo": True},  # Preço zero
+        {"nome": "Caneca Térmica", "preco": -5.99, "estoque": 2, "ativo": True}, # Preço negativo
         {"preco": 49.90, "estoque": 12},                                   # Ausência de nome
-        {"nome": "Teclado Z", "estoque": 8},                                # Ausência de preço
+        {"nome": "Balança de Precisão", "estoque": 8},                                # Ausência de preço
     ]
 )
-def test_criar_produto_com_dados_invalidos(client, dados_invalidos):
+def test_nao_deve_permitir_cadastro_com_dados_mal_formatados(client, dados_invalidos):
     response = client.post("/produtos", json=dados_invalidos)
     assert response.status_code == 422
 
 # 10. Pelo menos 1 teste que valide que o banco está isolado entre execuções
-def test_persistencia_temporaria_isolamento_1(client):
+def test_valida_isolamento_de_estado_no_banco_parte_1(client):
     payload = {
-        "nome": "Hub USB-C 7 em 1",
-        "preco": 259.00,
-        "estoque": 15,
+        "nome": "Cafeteira Italiana Moka",
+        "preco": 189.90,
+        "estoque": 20,
         "ativo": True
     }
     response = client.post("/produtos", json=payload)
@@ -114,7 +114,7 @@ def test_persistencia_temporaria_isolamento_1(client):
     get_res = client.get("/produtos")
     assert len(get_res.json()) == 1
 
-def test_persistencia_temporaria_isolamento_2(client):
+def test_valida_isolamento_de_estado_no_banco_parte_2(client):
     response = client.get("/produtos")
     assert response.status_code == 200
     assert response.json() == []

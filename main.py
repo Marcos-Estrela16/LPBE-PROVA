@@ -37,14 +37,14 @@ class ProductCreate(BaseModel):
     @classmethod
     def checar_nome(cls, val: str) -> str:
         if not val or not val.strip():
-            raise ValueError("O nome do produto não pode ser vazio")
+            raise ValueError("Ops! Todo produto precisa de um nome válido.")
         return val.strip()
 
     @field_validator("preco")
     @classmethod
     def checar_preco(cls, val: float) -> float:
         if val <= 0:
-            raise ValueError("O preço deve ser maior que zero")
+            raise ValueError("O valor do produto não pode ser gratuito ou negativo.")
         return val
 
 class ProductSchema(BaseModel):
@@ -60,8 +60,8 @@ class ProductSchema(BaseModel):
 
 # 4. Inicialização do App FastAPI
 app = FastAPI(
-    title="Store Management API",
-    description="API simples de controle de produtos de e-commerce",
+    title="Boutique de Cafés Especiais - API",
+    description="Gerenciamento de estoque para uma loja de cafés artesanais e acessórios.",
     version="1.0.0"
 )
 
@@ -98,7 +98,7 @@ def get_product_by_id(id: int, db: Session = Depends(get_database)):
     if not item:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Produto não localizado no banco"
+            detail="Vish, não encontramos nenhum produto com esse ID no catálogo."
         )
     return item
 
@@ -108,7 +108,7 @@ def delete_product_by_id(id: int, db: Session = Depends(get_database)):
     if not item:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Produto não localizado no banco"
+            detail="Vish, não encontramos nenhum produto com esse ID no catálogo."
         )
     db.delete(item)
     db.commit()
